@@ -5,8 +5,8 @@ public class Electrodomestico extends Producto{
 	public int anyosGarantia;
 	private Motor motor;
 	
-	public Electrodomestico(String fechaFabricacion, int anyosGarantia, String material, double capacidad) {
-		super();
+	public Electrodomestico(String nombre, String codigoProducto, double precio, String fechaFabricacion, int anyosGarantia, String material, double capacidad) {
+		super(codigoProducto, nombre, precio);
 		this.fechaFabricacion = fechaFabricacion;
 		this.anyosGarantia = anyosGarantia;
 		this.motor = new Motor(material, capacidad);
