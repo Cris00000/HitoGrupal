@@ -5,16 +5,10 @@ public class Electrodomestico {
 	public int anyosGarantia;
 	private Motor motor;
 	
-	
-	
-	
-	
-	
 	public Electrodomestico(String fechaFabricacion, int anyosGarantia, String material, double capacidad) {
 		super();
 		this.fechaFabricacion = fechaFabricacion;
 		this.anyosGarantia = anyosGarantia;
-		this.motor = motor;
 		this.motor = new Motor(material, capacidad);
 	}
 
