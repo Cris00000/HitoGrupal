@@ -23,6 +23,12 @@ public class Motor {
 	public String toString() {
 		return "Motor: [material=" + material + ", capacidad=" + capacidad + "]";
 	}
+	public Motor(String material, double capacidad) {
+		super();
+		this.material = material;
+		this.capacidad = capacidad;
+	}
+	
 	
 	
 }
