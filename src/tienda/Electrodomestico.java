@@ -1,6 +1,6 @@
 package tienda;
 
-public class Electrodomestico {
+public class Electrodomestico extends Producto{
 	public String fechaFabricacion;
 	public int anyosGarantia;
 	private Motor motor;
