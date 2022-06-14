@@ -1,9 +1,9 @@
 package tienda;
 
 public class Producto {
-	private String nombre;
-	private String codigoProducto;
-	private double precio;
+	protected String nombre;
+	protected String codigoProducto;
+	protected double precio;
 	public Producto(String nombre, String codigoProducto, double precio) {
 		super();
 		this.nombre = nombre;

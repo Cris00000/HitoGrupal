@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Conexion {
+public class Principal {
 
 	public static void main(String[] args) {
 		try {
@@ -31,6 +31,8 @@ public class Conexion {
 		System.out.println("Se ha establecido la conexión con la Base de datos");
 		
 		System.out.println("Lista de electrodomésticos");
+		System.out.println(" ");
+		System.out.println("Código de producto - Nombre - Precio - Fecha de fabricación - Años de garantía");
 		
 		try {
 			Statement sentencia = con.createStatement();
@@ -45,12 +47,47 @@ public class Conexion {
 				System.out.print(rs.getString("fechaFabricacion"));
 				System.out.print(" - "); 
 				System.out.print(rs.getString("anyosGarantia"));
-				System.out.println(); // Retorno de carro
+				System.out.println();
 			}
 		} catch (SQLException e) {
 			System.out.println("Error al realizar el listado de productos");
 			System.out.println(e.getMessage());
 		}
+		
+		System.out.println(" ");
+		System.out.println("Lista de comida");
+		System.out.println(" ");
+		System.out.println("Código de producto - Nombre - Precio sin IVA - Fecha de caducidad");
+		
+		try {
+			Statement sentencia = con.createStatement();
+			ResultSet rs = sentencia.executeQuery("select * from producto right join comida on producto.codigoProducto = comida.codigoProducto");
+			while (rs.next()) {
+				System.out.print(rs.getString("codigoProducto"));
+				System.out.print(" - "); 
+				System.out.print(rs.getString("nombre"));
+				System.out.print(" - "); 
+				System.out.print(rs.getString("precio"));
+				System.out.print(" - "); 
+				System.out.print(rs.getString("fechaCaducidad"));
+				System.out.println();
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al realizar el listado de productos");
+			System.out.println(e.getMessage());
+		}
+		
+		System.out.println(" ");
+		System.out.println("Selecciona una opción");
+		System.out.println(" ");
+		System.out.println("1. Añadir productos");
+		System.out.println("2. Quitar productos");
+		System.out.println("3. Modificar productos");
+		System.out.println("4. Salir");
+		System.out.println("----------------------");
+		
+		
+		
 		
 		try {
 			con.close();

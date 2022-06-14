@@ -37,5 +37,7 @@ public class Electrodomestico extends Producto{
 				+ ", motor=" + motor + "]";
 	}
 	
-	
+	public double precioIVA(double cantidad) {
+		return this.precio*cantidad;
+	}
 }
