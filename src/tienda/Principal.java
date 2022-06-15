@@ -124,11 +124,14 @@ public class Principal {
 				String fechaFabricación= lector.nextLine();
 				System.out.println("Inserta los años de garantía del producto");
 				int anyosGarantia= lector.nextInt();
-				
+				System.out.println("Inserta el material del motor");
+				String material= lector.nextLine();
+				System.out.println("Inserta la capacidad del motor");
+				int capacidad= lector.nextInt();
 				try {
 					Statement sentencia = con.createStatement();
-					ResultSet rs = sentencia.executeQuery("insert into producto values("+codigoProducto+","+nombre+precio+")");
-					ResultSet rs2 = sentencia.executeQuery("insert into producto (fechaCaducidad, codigoProducto) values("+fechaCaducidad+","+codigoProducto+")");
+					ResultSet rs = sentencia.executeQuery("insert into producto values("+codigoProducto+","+nombre+","+precio+")");
+					ResultSet rs2 = sentencia.executeQuery("insert into producto (fechaCaducidad, codigoProducto) values("+anyosGarantia+","+codigoProducto+")");
 				} catch (SQLException e) {
 					System.out.println("Se ha producido un error");
 				}
