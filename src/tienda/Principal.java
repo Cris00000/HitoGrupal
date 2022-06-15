@@ -5,10 +5,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 public class Principal {
 
 	public static void main(String[] args) {
+		Scanner lector = new Scanner(System.in);
+		int respuesta=0;
+		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -29,6 +33,8 @@ public class Principal {
 			return;
 		}
 		System.out.println("Se ha establecido la conexión con la Base de datos");
+		
+		do {
 		
 		System.out.println("Lista de electrodomésticos");
 		System.out.println(" ");
@@ -86,8 +92,62 @@ public class Principal {
 		System.out.println("4. Salir");
 		System.out.println("----------------------");
 		
+		respuesta= lector.nextInt();
+		
+		switch(respuesta) {
+		case 1:
+			System.out.println(" ");
+			System.out.println("Has seleccionado añadir un producto");
+			System.out.println(" ");
+			System.out.println("Selecciona la categoría del producto");
+			System.out.println("1. Comida");
+			System.out.println("2. Electrodoméstico");
+			int categoria=lector.nextInt();
+			System.out.println("Inserta el codigo del producto");
+			String codigoProducto= lector.nextLine();
+			System.out.println("Inserta el nombre del producto");
+			String nombre= lector.nextLine();
+			System.out.println("Inserta el precio del producto");
+			String precio= lector.nextLine();
+			if(categoria==1) {
+				System.out.println("Inserta la fecha de caducidad del producto");
+				String fechaCaducidad= lector.nextLine();
+				try {
+					Statement sentencia = con.createStatement();
+					ResultSet rs = sentencia.executeQuery("insert into producto values("+codigoProducto+","+nombre+precio+")");
+					ResultSet rs2 = sentencia.executeQuery("insert into producto (fechaCaducidad, codigoProducto) values("+fechaCaducidad+","+codigoProducto+")");
+				} catch (SQLException e) {
+					System.out.println("Se ha producido un error");
+				}
+			} else if(categoria==2) {
+				System.out.println("Inserta la fecha de fabricación del producto");
+				String fechaFabricación= lector.nextLine();
+				System.out.println("Inserta los años de garantía del producto");
+				int anyosGarantia= lector.nextInt();
+				
+				try {
+					Statement sentencia = con.createStatement();
+					ResultSet rs = sentencia.executeQuery("insert into producto values("+codigoProducto+","+nombre+precio+")");
+					ResultSet rs2 = sentencia.executeQuery("insert into producto (fechaCaducidad, codigoProducto) values("+fechaCaducidad+","+codigoProducto+")");
+				} catch (SQLException e) {
+					System.out.println("Se ha producido un error");
+				}
+			}
+			
+			
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		default:
+			System.out.println("Opción incorrecta. Inténtalo de nuevo");
+		}
 		
 		
+		} while (respuesta!=4);
 		
 		try {
 			con.close();
