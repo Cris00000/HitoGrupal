@@ -114,6 +114,7 @@ public class Principal {
 				System.out.println("Inserta la fecha de caducidad del producto");
 				String fechaCaducidad= lector.nextLine();
 				try {
+					int numComida = comprobarNumComida(con);
 					Statement sentencia = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 					ResultSet rs = sentencia.executeQuery("select * from producto");
 					rs.moveToInsertRow(); 
@@ -123,6 +124,7 @@ public class Principal {
 					rs.insertRow();
 					ResultSet rs2 = sentencia.executeQuery("select * from comida");
 					rs2.moveToInsertRow(); 
+					rs2.updateInt("id", numComida);
 					rs2.updateString("fechaCaducidad", fechaCaducidad);
 					rs2.updateString("codigoProducto", codigoProducto); 
 					rs2.insertRow();
@@ -142,6 +144,8 @@ public class Principal {
 				System.out.println("Inserta la capacidad del motor");
 				int capacidad= lector.nextInt();
 				try {
+					int numMotor = comprobarNumMotor(con);
+					int numElectrodomestico = comprobarNumElectrodomestico(con);
 					Statement sentencia = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 					ResultSet rs = sentencia.executeQuery("select * from producto");
 					rs.moveToInsertRow(); 
@@ -151,16 +155,16 @@ public class Principal {
 					rs.insertRow();
 					ResultSet rs2 = sentencia.executeQuery("select * from motor");
 					rs2.moveToInsertRow(); 
+					rs2.updateInt("id", numMotor);
 					rs2.updateString("material", material); 
 					rs2.updateInt("capacidad", capacidad);
 					rs2.insertRow();
-					ResultSet maxMotor=sentencia.executeQuery("select max(id) from motor");
-					int idMotor = maxMotor.getInt(1);
 					ResultSet rs3 = sentencia.executeQuery("select * from electrodomestico");
-					rs3.moveToInsertRow(); 
+					rs3.moveToInsertRow();
+					rs3.updateInt("fechaFabricacion", numElectrodomestico); 
 					rs3.updateString("fechaFabricacion", fechaFabricacion); 
 					rs3.updateInt("anyosGarantia", anyosGarantia);
-					rs3.updateInt("motor", idMotor);
+					rs3.updateInt("motor", numMotor);
 					rs3.updateString("codigoProducto", codigoProducto);
 					rs3.insertRow();
 				} catch (SQLException e) {
@@ -265,5 +269,53 @@ public class Principal {
 			return;
 		}
 		System.out.println("Gracias por usar el programa");
+	}
+	
+	public static int comprobarNumMotor(Connection con) {
+		try {
+			Statement sentencia = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			String sql="Select max(id) from motor";
+			ResultSet rs= sentencia.executeQuery(sql);
+			rs.next();
+			int numero = rs.getInt(1)+1;
+			return numero;
+		} catch (SQLException e) {
+			System.out.println("Error");
+			System.out.println(e.getMessage());
+			return 0;
+		}
+		
+	}
+	
+	public static int comprobarNumComida(Connection con) {
+		try {
+			Statement sentencia = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			String sql="Select max(id) from comida";
+			ResultSet rs= sentencia.executeQuery(sql);
+			rs.next();
+			int numero = rs.getInt(1)+1;
+			return numero;
+		} catch (SQLException e) {
+			System.out.println("Error");
+			System.out.println(e.getMessage());
+			return 0;
+		}
+		
+	}
+	
+	public static int comprobarNumElectrodomestico(Connection con) {
+		try {
+			Statement sentencia = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			String sql="Select max(id) from electrodomestico";
+			ResultSet rs= sentencia.executeQuery(sql);
+			rs.next();
+			int numero = rs.getInt(1)+1;
+			return numero;
+		} catch (SQLException e) {
+			System.out.println("Error");
+			System.out.println(e.getMessage());
+			return 0;
+		}
+		
 	}
 }
