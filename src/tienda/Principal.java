@@ -103,6 +103,7 @@ public class Principal {
 			System.out.println("1. Comida");
 			System.out.println("2. Electrodoméstico");
 			int categoria=lector.nextInt();
+			String basura=lector.nextLine();
 			System.out.println("Inserta el codigo del producto");
 			String codigoProducto= lector.nextLine();
 			System.out.println("Inserta el nombre del producto");
@@ -113,27 +114,58 @@ public class Principal {
 				System.out.println("Inserta la fecha de caducidad del producto");
 				String fechaCaducidad= lector.nextLine();
 				try {
-					Statement sentencia = con.createStatement();
-					ResultSet rs = sentencia.executeQuery("insert into producto values("+codigoProducto+","+nombre+precio+")");
-					ResultSet rs2 = sentencia.executeQuery("insert into producto (fechaCaducidad, codigoProducto) values("+fechaCaducidad+","+codigoProducto+")");
+					Statement sentencia = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+					ResultSet rs = sentencia.executeQuery("select * from producto");
+					rs.moveToInsertRow(); 
+					rs.updateString("codigoProducto", codigoProducto); 
+					rs.updateString("nombre", nombre); 
+					rs.updateString("precio", precio); 
+					rs.insertRow();
+					ResultSet rs2 = sentencia.executeQuery("select * from comida");
+					rs2.moveToInsertRow(); 
+					rs2.updateString("fechaCaducidad", fechaCaducidad);
+					rs2.updateString("codigoProducto", codigoProducto); 
+					rs2.insertRow();
+					
 				} catch (SQLException e) {
 					System.out.println("Se ha producido un error");
+					System.out.println(e.getMessage());
 				}
 			} else if(categoria==2) {
 				System.out.println("Inserta la fecha de fabricación del producto");
-				String fechaFabricación= lector.nextLine();
+				String fechaFabricacion= lector.nextLine();
 				System.out.println("Inserta los años de garantía del producto");
 				int anyosGarantia= lector.nextInt();
+				basura=lector.nextLine();
 				System.out.println("Inserta el material del motor");
 				String material= lector.nextLine();
 				System.out.println("Inserta la capacidad del motor");
 				int capacidad= lector.nextInt();
 				try {
-					Statement sentencia = con.createStatement();
-					ResultSet rs = sentencia.executeQuery("insert into producto values("+codigoProducto+","+nombre+","+precio+")");
-					ResultSet rs2 = sentencia.executeQuery("insert into producto (fechaCaducidad, codigoProducto) values("+anyosGarantia+","+codigoProducto+")");
+					Statement sentencia = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+					ResultSet rs = sentencia.executeQuery("select * from producto");
+					rs.moveToInsertRow(); 
+					rs.updateString("codigoProducto", codigoProducto); 
+					rs.updateString("nombre", nombre); 
+					rs.updateString("precio", precio); 
+					rs.insertRow();
+					ResultSet rs2 = sentencia.executeQuery("select * from motor");
+					rs2.moveToInsertRow(); 
+					rs2.updateString("material", material); 
+					rs2.updateInt("capacidad", capacidad);
+					rs2.insertRow();
+					ResultSet maxMotor=sentencia.executeQuery("select max(id) from motor");
+					int idMotor = maxMotor.getInt(1);
+					ResultSet rs3 = sentencia.executeQuery("select * from electrodomestico");
+					rs3.moveToInsertRow(); 
+					rs3.updateString("fechaFabricacion", fechaFabricacion); 
+					rs3.updateInt("anyosGarantia", anyosGarantia);
+					rs3.updateInt("motor", idMotor);
+					rs3.updateString("codigoProducto", codigoProducto);
+					rs3.insertRow();
 				} catch (SQLException e) {
 					System.out.println("Se ha producido un error");
+					System.out.println(e.getMessage());
 				}
 			}
 			
