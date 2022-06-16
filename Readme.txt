@@ -1,0 +1,1 @@
+El objetivo de este proyecto es crear una aplicación que permita administrar los productos de una tienda conectándose a una base de datos
