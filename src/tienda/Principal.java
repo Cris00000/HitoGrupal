@@ -168,12 +168,85 @@ public class Principal {
 					System.out.println(e.getMessage());
 				}
 			}
-			
-			
 			break;
 		case 2:
+			System.out.println(" ");
+			System.out.println("Has seleccionado quitar un producto");
+			System.out.println(" ");
+			System.out.println("Inserta el id del producto");
+			basura=lector.nextLine();
+			String idProducto=lector.nextLine();
+			try {
+				Statement sentencia = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				ResultSet rs = sentencia.executeQuery("select * from comida where codigoProducto='"+idProducto+"'");
+				boolean existe = rs.next();
+				if (existe) {
+					rs.deleteRow();
+				}
+				ResultSet rs2 = sentencia.executeQuery("select * from electrodomestico inner join motor on electrodomestico.motor=motor.id where codigoProducto='"+idProducto+"'");
+				existe = rs2.next();
+				if (existe) {
+					rs2.deleteRow();
+				}
+				ResultSet rs3 = sentencia.executeQuery("select * from producto where codigoProducto='"+idProducto+"'");
+				existe = rs3.next();
+				if (existe) {
+					rs3.deleteRow();
+				}
+				
+				
+			} catch (SQLException e) {
+				System.out.println("Se ha producido un error");
+				System.out.println(e.getMessage());
+			}
 			break;
 		case 3:
+			System.out.println(" ");
+			System.out.println("Has seleccionado quitar un producto");
+			System.out.println(" ");
+			System.out.println("Inserta el id del producto");
+			basura=lector.nextLine();
+			idProducto=lector.nextLine();
+			System.out.println(" ");
+			System.out.println("Selecciona lo que quieres modificar");
+			System.out.println("--------------------------");
+			System.out.println("1. Nombre");
+			System.out.println("2. Precio");
+			System.out.println("--------------------------");
+			int respuestaModificar=lector.nextInt();
+			if(respuestaModificar==1) {
+				System.out.println("Inserta un nombre nuevo");
+				basura=lector.nextLine();
+				String nombreNuevo=lector.nextLine();
+				try {
+					Statement sentencia = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+					ResultSet rs = sentencia.executeQuery("select * from producto where codigoProducto = '"+idProducto+"'");
+					boolean existe = rs.next();
+					if (existe) {
+						rs.updateString("nombre", nombreNuevo);
+						rs.updateRow();
+					}
+				} catch (SQLException e) {
+					System.out.println("Se ha producido un error");
+					System.out.println(e.getMessage());
+				}
+			}  else if(respuestaModificar==2) {
+				System.out.println("Inserta un precio nuevo");
+				Double precioNuevo=lector.nextDouble();
+				try {
+					Statement sentencia = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+					ResultSet rs = sentencia.executeQuery("select * from producto where codigoProducto = '"+idProducto+"'");
+					boolean existe = rs.next();
+					if (existe) {
+						rs.updateDouble("precio", precioNuevo);
+						rs.updateRow();
+					}
+				} catch (SQLException e) {
+					System.out.println("Se ha producido un error");
+					System.out.println(e.getMessage());
+				}
+			}
+			
 			break;
 		case 4:
 			break;
@@ -191,6 +264,6 @@ public class Principal {
 			System.out.println(e.getMessage());
 			return;
 		}
-		System.out.println("Se ha cerrado la base de datos");
+		System.out.println("Gracias por usar el programa");
 	}
 }
